@@ -3,7 +3,7 @@ on:
    - cron: "0 18 * * *"
  workflow_dispatch:
 
-name: Madison weather update
+name: Sevilla weather update
 
 jobs:
   render:
@@ -25,7 +25,7 @@ jobs:
         with:
           timeout_seconds: 60
           max_attempts: 3
-          command: Rscript -e 'source("R/Retrieve_GHCN_USW00014837.R")'
+          command: Rscript -e 'source("R/Retrieve_GHCN_SPE00120512.R")'
           continue_on_error: true
       - name: Commit data
         uses: stefanzweifel/git-auto-commit-action@v5

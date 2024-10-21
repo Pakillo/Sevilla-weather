@@ -5,7 +5,7 @@ library(dplyr)
 library(lubridate)
 library(stringr)
 
-ghcn <- read_csv("data/GHCN_USW00014837.csv") %>%
+ghcn <- read_csv("data/GHCN_SPE00120512.csv") %>%
   group_by(year) %>%
   arrange(day_of_year) %>%
   mutate(cum_precip = cumsum(PRCP)) %>%
@@ -86,21 +86,21 @@ cum.precip.graph <- daily.summary.stats %>%
   geom_segment(data = pctile.labels, aes(x = 365, xend = 367, y = precip, yend = precip)) +
   geom_text(data = pctile.labels, aes(367.5, precip, label = pctile),
             hjust = 0, family = "serif", size = 3) +
-  scale_y_continuous(breaks = seq(-10, 100, 10),
-                     labels = scales::unit_format(suffix = "in."),
+  scale_y_continuous(breaks = seq(0, 1000, 100),
+                     # labels = scales::unit_format(suffix = "mm."),
                      expand = expansion(0.01),
-                     name = NULL) +
+                     name = "mm") +
   scale_x_continuous(expand = expansion(c(0, 0.04)),
                      breaks = month.breaks$day_of_year + 15,
                      labels = month.breaks$month_name,
                      name = NULL) +
-  labs(title = "Cumulative annual precipitation at Madison Truax Field",
+  labs(title = "Cumulative annual precipitation at Sevilla (San Pablo Airport)",
        subtitle = paste("The line shows precipitation for",
                         paste0(lubridate::year(last.date), "."),
                         "The ribbons cover the",
                         "historical range. The last date shown is", 
                         format(last.date, "%b %d, %Y.")),
-       caption = paste("Records begin on January 1, 1939.",
+       caption = paste("Records begin on January 1, 1951.",
                        "This graph was last updated on", format(Sys.Date(), "%B %d, %Y."))) +
   theme(panel.background = element_blank(),
         panel.border = element_blank(),
@@ -113,5 +113,5 @@ cum.precip.graph <- daily.summary.stats %>%
 
 cum.precip.graph
 
-ggsave("graphs/AnnualCumulativePrecipitation_USW00014837.png", plot = cum.precip.graph,
+ggsave("graphs/AnnualCumulativePrecipitation_SPE00120512.png", plot = cum.precip.graph,
       width = 9, height = 4.5)
